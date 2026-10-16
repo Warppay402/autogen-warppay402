@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "autogen-warppay402"
+version = "1.0.1"
+description = "Microsoft AutoGen tool integration for WarpPay402 x402 monetized APIs"
+authors = ["WarpPay402 <warppay.402@gmail.com>"]
+readme = "README.md"
+packages = [{include = "autogen_warppay402"}]
+
+[tool.poetry.urls]
+Homepage = "https://www.warppay402.com"
+Repository = "https://github.com/Warppay402/autogen-warppay402"
+Documentation = "https://api.warppay402.com/openapi.json"
