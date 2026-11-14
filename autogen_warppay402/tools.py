@@ -3,10 +3,9 @@ import json
 import warppay402_mcp as mcp
 
 class WarpPayAutoGenTools:
-    """Provides AutoGen-compatible tool registrations for WarpPay402 x402 tools."""
+    """Provides AutoGen-compatible tool registrations for WarpPay402 x402 tools and autonomous agents."""
 
     def __init__(self):
-        # Instantiate individual tool objects exported by warppay402_mcp
         self.tools = {
             "public_data_feed": mcp.PublicDataFeedTool(),
             "data_feeds": mcp.DataFeedsTool(),
@@ -37,18 +36,19 @@ class WarpPayAutoGenTools:
             "property_comps_estimator": mcp.PropertyCompsEstimatorTool(),
             "outage_oracle": mcp.OutageOracleTool(),
             "ucp_deals_oracle": mcp.UcpDealsOracleTool(),
+            "warppay_defi_executor": mcp.DefiExecutorAgentTool(),
+            "warppay_deep_research": mcp.DeepResearchAgentTool(),
         }
 
     def get_tool_functions(self) -> Dict[str, Callable]:
         """Returns a dictionary mapping tool names to executable functions for AutoGen."""
         functions = {}
         for name, tool_obj in self.tools.items():
-            # Wrap execution via the tool's .invoke() interface
             functions[name] = lambda kwargs, t=tool_obj: str(t.invoke(kwargs))
         return functions
 
     def register_all(self, assistant_agent, user_proxy_agent):
-        """Helper to register all 29 tools between an AssistantAgent and UserProxyAgent."""
+        """Helper to register all tools and composite agents between an AssistantAgent and UserProxyAgent."""
         for name, tool_obj in self.tools.items():
             func = lambda **kwargs: str(tool_obj.invoke(kwargs))
             assistant_agent.register_for_llm(name=name, description=tool_obj.description)(func)
